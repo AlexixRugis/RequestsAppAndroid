@@ -16,8 +16,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RequestsAppAndroidTheme {
                 val navController = rememberNavController()
-                val viewModel = hiltViewModel<MainViewModel>()
-                SetupNavHost(navController = navController, viewModel = viewModel)
+                SetupNavHost(navController = navController)
             }
         }
     }

@@ -1,6 +1,8 @@
 package com.artech.requestsappandroid.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,7 +22,7 @@ sealed class Screens(val route: String) {
 }
 
 @Composable
-fun SetupNavHost(navController: NavHostController, viewModel: MainViewModel) {
+fun SetupNavHost(navController: NavHostController, viewModel: MainViewModel = hiltViewModel()) {
     NavHost(
         navController = navController,
         startDestination = Screens.Splash.route
@@ -29,10 +31,10 @@ fun SetupNavHost(navController: NavHostController, viewModel: MainViewModel) {
             SplashScreen(navController = navController, viewModel = viewModel)
         }
         composable(Screens.Login.route) {
-            LoginScreen(navController = navController, viewModel = viewModel)
+            LoginScreen(navController = navController)
         }
         composable(Screens.Account.route) {
-            AccountScreen(navController = navController, viewModel = viewModel)
+            AccountScreen(navController = navController)
         }
         composable(Screens.Requests.route) {
 
