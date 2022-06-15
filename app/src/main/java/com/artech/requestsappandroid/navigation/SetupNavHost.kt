@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.artech.requestsappandroid.MainViewModel
 import com.artech.requestsappandroid.ui.screens.AccountScreen
+import com.artech.requestsappandroid.ui.screens.LoginScreen
 import com.artech.requestsappandroid.ui.screens.SplashScreen
 import com.artech.requestsappandroid.utils.Constants
 
@@ -18,19 +20,19 @@ sealed class Screens(val route: String) {
 }
 
 @Composable
-fun SetupNavHost(navController: NavHostController) {
+fun SetupNavHost(navController: NavHostController, viewModel: MainViewModel) {
     NavHost(
         navController = navController,
         startDestination = Screens.Splash.route
     ) {
         composable(Screens.Splash.route) {
-            SplashScreen(navController = navController)
+            SplashScreen(navController = navController, viewModel = viewModel)
         }
         composable(Screens.Login.route) {
-
+            LoginScreen(navController = navController, viewModel = viewModel)
         }
         composable(Screens.Account.route) {
-            AccountScreen()
+            AccountScreen(navController = navController, viewModel = viewModel)
         }
         composable(Screens.Requests.route) {
 
