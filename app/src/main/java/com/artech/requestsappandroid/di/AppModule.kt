@@ -1,27 +1,29 @@
 package com.artech.requestsappandroid.di
 
+import android.content.Context
 import com.artech.requestsappandroid.data.remote.api.RequestsApi
+import com.artech.requestsappandroid.utils.interceptors.AddCookiesInterceptor
+import com.artech.requestsappandroid.utils.interceptors.ReceivedCookiesInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import java.util.concurrent.TimeUnit
 
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
     @Provides
     fun baseUrl() = "http://10.0.2.2:8000/api/v1/"
 
     @Provides
-    fun provideHttpClient(): OkHttpClient {
+    fun provideHttpClient(@ApplicationContext appContext: Context): OkHttpClient {
         val interceptor = run {
             val httpLoggingInterceptor = HttpLoggingInterceptor()
             httpLoggingInterceptor.apply {
@@ -29,19 +31,22 @@ object AppModule {
             }
         }
 
+        val builder = OkHttpClient.Builder()
+        builder.addInterceptor(interceptor)
+        builder.addInterceptor(AddCookiesInterceptor(appContext))
+        builder.addInterceptor(ReceivedCookiesInterceptor(appContext))
 
-        return OkHttpClient.Builder()
-            .addInterceptor(interceptor) // same for .addInterceptor(...)
-            .build()
+
+        return builder.build()
     }
 
     @Provides
     @Singleton
-    fun provideRetrofit() : RequestsApi =
+    fun provideRetrofit(@ApplicationContext appContext: Context) : RequestsApi =
         Retrofit.Builder()
             .baseUrl(baseUrl())
             .addConverterFactory(GsonConverterFactory.create())
-            .client(provideHttpClient())
+            .client(provideHttpClient(appContext))
             .build()
             .create(RequestsApi::class.java)
 }

@@ -34,6 +34,13 @@ class AccountViewModel @Inject constructor(private val repository: ApiRepository
         }
     }
 
+    suspend fun logout(): Boolean {
+        if (repository.logout().isSuccessful) {
+            return true
+        }
+        return false
+    }
+
 
     private suspend fun getRepairRequests(): RepairRequests {
         val response = repository.getAllAvailableRequests()
