@@ -5,6 +5,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface RequestsApi {
 
@@ -22,4 +23,16 @@ interface RequestsApi {
 
     @GET("requests/")
     suspend fun requests() : Response<RepairRequests>
+
+    @GET("requests/{id}/")
+    suspend fun getRequest(@Path("id") id: Int) : Response<RepairRequest>
+
+    @GET("tasks/")
+    suspend fun getTasks() : Response<RepairTasks>
+
+    @GET("tasks/{id}/")
+    suspend fun getTask(@Path("id") id : Int) : Response<RepairTask>
+
+    @POST("tasks/{id}/complete/")
+    suspend fun completeTask(@Path("id") id : Int) : Response<ResponseDetails>
 }

@@ -5,6 +5,6 @@ data class RepairTask(
     val id: Int,
     val is_completed: Boolean,
     val parts: List<PartRequest>,
-    val repairRequest: RepairRequest,
+    val request: RepairRequest,
     val status_photo: Any
 )
