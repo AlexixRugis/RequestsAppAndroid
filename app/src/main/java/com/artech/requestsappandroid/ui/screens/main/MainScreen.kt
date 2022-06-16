@@ -21,22 +21,24 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.artech.requestsappandroid.ui.screens.RequestDetailsScreen
+import com.artech.requestsappandroid.ui.request_details.RequestDetailsScreen
+import com.artech.requestsappandroid.ui.request_details.RequestDetailsViewModel
 import com.artech.requestsappandroid.ui.screens.account.AccountScreen
 import com.artech.requestsappandroid.ui.screens.account.AccountViewModel
 import com.artech.requestsappandroid.ui.screens.login.LoginScreen
 import com.artech.requestsappandroid.ui.screens.login.LoginViewModel
-import com.artech.requestsappandroid.ui.screens.main.models.AuthenticationState
+import com.artech.requestsappandroid.ui.screens.main.models.LoadingState
 import com.artech.requestsappandroid.ui.screens.main.models.MainViewEvent
+import com.artech.requestsappandroid.ui.screens.requests.RequestsScreen
+import com.artech.requestsappandroid.ui.screens.requests.RequestsViewModel
 import com.artech.requestsappandroid.ui.screens.task_details.TaskDetailsScreen
 import com.artech.requestsappandroid.ui.screens.task_details.TaskDetailsViewModel
-import com.artech.requestsappandroid.ui.viewmodels.RequestDetailViewModel
 import com.artech.requestsappandroid.utils.Constants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 sealed class Screens(val route: String) {
-    object Login: Screens(Constants.Screens.LOGIN_SCREEN)
+    object Settings: Screens(Constants.Screens.SETTINGS_SCREEN)
     object Account: Screens(Constants.Screens.ACCOUNT_SCREEN)
     object Requests: Screens(Constants.Screens.REQUESTS_SCREEN)
     object RequestDetails: Screens(Constants.Screens.REQUEST_DETAILS_SCREEN)
@@ -52,17 +54,23 @@ fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
         viewModel.obtainEvent(MainViewEvent.SplashScreenEnter)
     }
 
-    when (state.value.loadTo != null) {
-        false -> SplashScreen(state = state.value.state)
-        true -> MainView(navController = navController,
-            startDestination = state.value.loadTo!!,
-            viewModel = viewModel
-        )
+    when (state.value.state) {
+        LoadingState.LOADING -> SplashScreen()
+        LoadingState.ACCOUNT -> MainView(navController = navController, viewModel = viewModel)
+        LoadingState.LOGIN -> LoginView(viewModel = viewModel)
     }
 }
 
 @Composable
-fun MainView(navController: NavHostController, startDestination: String, viewModel: MainViewModel) {
+fun LoginView(viewModel: MainViewModel) {
+    val loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel.mainViewModel = viewModel
+    loginViewModel.context = LocalContext.current
+    LoginScreen(loginViewModel)
+}
+
+@Composable
+fun MainView(navController: NavHostController, viewModel: MainViewModel) {
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -82,7 +90,41 @@ fun MainView(navController: NavHostController, startDestination: String, viewMod
             Card(
                 elevation = 8.dp,
                 modifier = Modifier
-                    .padding(top=8.dp)
+                    .padding(top = 8.dp)
+                    .fillMaxWidth()
+                    .clickable {
+                        viewModel.obtainEvent(MainViewEvent.EnterRequestsScreen)
+                        coroutineScope.launch {
+                            scaffoldState.drawerState.close()
+                        }
+                    },
+            ) {
+                Text(
+                    text = "Найти заявки",
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
+            Card(
+                elevation = 8.dp,
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .fillMaxWidth()
+                    .clickable {
+                        viewModel.obtainEvent(MainViewEvent.EnterSettingsScreen)
+                        coroutineScope.launch {
+                            scaffoldState.drawerState.close()
+                        }
+                    },
+            ) {
+                Text(
+                    text = "Настройки",
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
+            Card(
+                elevation = 8.dp,
+                modifier = Modifier
+                    .padding(top = 8.dp)
                     .fillMaxWidth()
                     .clickable {
                         viewModel.obtainEvent(MainViewEvent.ExitApplication)
@@ -105,26 +147,22 @@ fun MainView(navController: NavHostController, startDestination: String, viewMod
         ) {
             NavHost(
                 navController = navController,
-                startDestination = startDestination
+                startDestination = Screens.Account.route
             ) {
-                composable(Screens.Login.route) {
-                    val loginViewModel: LoginViewModel = hiltViewModel()
-                    loginViewModel.navController = navController
-                    loginViewModel.context = LocalContext.current
-                    LoginScreen(loginViewModel)
-                }
                 composable(Screens.Account.route) {
                     val accountViewModel: AccountViewModel = hiltViewModel()
                     accountViewModel.navController = navController
                     AccountScreen(accountViewModel)
                 }
                 composable(Screens.Requests.route) {
-
+                    val requestsViewModel: RequestsViewModel = hiltViewModel()
+                    requestsViewModel.navController = navController
+                    RequestsScreen(viewModel = requestsViewModel)
                 }
                 composable(Screens.RequestDetails.route + "/{id}") {
-                    val requestDetailsViewModel: RequestDetailViewModel = hiltViewModel()
+                    val requestDetailsViewModel: RequestDetailsViewModel = hiltViewModel()
+                    requestDetailsViewModel.navController = navController
                     requestDetailsViewModel.id = it.arguments?.getString("id")?.toInt() ?: 1
-                    requestDetailsViewModel.refresh()
                     RequestDetailsScreen(requestDetailsViewModel)
                 }
                 composable(Screens.TaskDetails.route + "/{id}") {
@@ -133,36 +171,28 @@ fun MainView(navController: NavHostController, startDestination: String, viewMod
                     taskDetailsViewModel.navController = navController
                     TaskDetailsScreen(viewModel = taskDetailsViewModel)
                 }
+                composable(Screens.Settings.route) {
+
+                }
             }
         }
     }
 }
 
 @Composable
-fun SplashScreen(state: AuthenticationState) {
+fun SplashScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        when (state) {
-            AuthenticationState.LOADING -> Splash()
-            AuthenticationState.LOADING_ERROR -> LoadingError()
-            AuthenticationState.SUCCESS -> Authenticated()
-            AuthenticationState.FAILURE -> NotAuthenticated()
-        }
-    }
-}
+        val isAnimating = remember { mutableStateOf(false) }
+        val alphaAnimation = animateFloatAsState(
+            targetValue = if (isAnimating.value) 1f else 0f,
+            animationSpec = tween(durationMillis = 1500)
+        )
+        LaunchedEffect(key1 = true, block = { isAnimating.value = true })
 
-@Composable
-fun Splash() {
-    val isAnimating = remember { mutableStateOf(false) }
-    val alphaAnimation = animateFloatAsState(
-        targetValue = if (isAnimating.value) 1f else 0f,
-        animationSpec = tween(durationMillis = 1500)
-    )
-    LaunchedEffect(key1 = true, block = { isAnimating.value = true })
-
-    Icon(
+        Icon(
             modifier = Modifier
                 .size(120.dp)
                 .scale(alphaAnimation.value)
@@ -171,55 +201,5 @@ fun Splash() {
             contentDescription = "",
             tint = Color.Black
         )
-}
-
-@Composable
-fun LoadingError() {
-    val isAnimating = remember { mutableStateOf(false) }
-    val alphaAnimation = animateFloatAsState(
-        targetValue = if (isAnimating.value) 1f else 0f,
-        animationSpec = tween(durationMillis = 1500)
-    )
-    LaunchedEffect(key1 = true, block = { isAnimating.value = true })
-    Text(
-        text = "Возникла ошибка подключения",
-        fontSize = 24.sp,
-        modifier = Modifier
-            .scale(alphaAnimation.value)
-            .alpha(alphaAnimation.value),
-    )
-}
-
-@Composable
-fun Authenticated() {
-    val isAnimating = remember { mutableStateOf(false) }
-    val alphaAnimation = animateFloatAsState(
-        targetValue = if (isAnimating.value) 1f else 0f,
-        animationSpec = tween(durationMillis = 1500)
-    )
-    LaunchedEffect(key1 = true, block = { isAnimating.value = true })
-    Text(
-        text = "С возвращением!",
-        fontSize = 24.sp,
-        modifier = Modifier
-            .scale(alphaAnimation.value)
-            .alpha(alphaAnimation.value),
-    )
-}
-
-@Composable
-fun NotAuthenticated() {
-    val isAnimating = remember { mutableStateOf(false) }
-    val alphaAnimation = animateFloatAsState(
-        targetValue = if (isAnimating.value) 1f else 0f,
-        animationSpec = tween(durationMillis = 1500)
-    )
-    LaunchedEffect(key1 = true, block = { isAnimating.value = true })
-    Text(
-        text = "Добро пожаловать!",
-        fontSize = 24.sp,
-        modifier = Modifier
-            .scale(alphaAnimation.value)
-            .alpha(alphaAnimation.value),
-    )
+    }
 }

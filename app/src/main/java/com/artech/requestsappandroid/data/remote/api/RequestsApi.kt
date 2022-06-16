@@ -27,6 +27,9 @@ interface RequestsApi {
     @GET("requests/{id}/")
     suspend fun getRequest(@Path("id") id: Int) : Response<RepairRequest>
 
+    @POST("requests/{id}/accept/")
+    suspend fun acceptRequest(@Path("id") id: Int) : Response<ResponseDetails>
+
     @GET("tasks/")
     suspend fun getTasks() : Response<RepairTasks>
 
@@ -35,4 +38,10 @@ interface RequestsApi {
 
     @POST("tasks/{id}/complete/")
     suspend fun completeTask(@Path("id") id : Int) : Response<ResponseDetails>
+
+    @GET("repair_parts/")
+    suspend fun getRepairParts() : Response<List<Part>>
+
+    @POST("tasks/{id}/add_parts/")
+    suspend fun addParts(@Path("id") id: Int, @Body partRequests: AddParts) : Response<ResponseDetails>
 }

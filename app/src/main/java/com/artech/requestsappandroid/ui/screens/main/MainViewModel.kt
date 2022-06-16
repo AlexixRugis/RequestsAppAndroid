@@ -7,11 +7,10 @@ import androidx.navigation.NavController
 import com.artech.requestsappandroid.common.EventHandler
 import com.artech.requestsappandroid.data.remote.api.ApiRepository
 import com.artech.requestsappandroid.data.remote.models.AuthenticationStatus
-import com.artech.requestsappandroid.ui.screens.main.models.AuthenticationState
+import com.artech.requestsappandroid.ui.screens.main.models.LoadingState
 import com.artech.requestsappandroid.ui.screens.main.models.MainViewEvent
 import com.artech.requestsappandroid.ui.screens.main.models.MainViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -30,15 +29,29 @@ class MainViewModel @Inject constructor(
         when (event) {
             MainViewEvent.SplashScreenEnter -> enterScreenInvoked()
             MainViewEvent.ExitApplication -> exit()
+            MainViewEvent.LoginApplication -> navigateToAccountScreen()
+            MainViewEvent.EnterRequestsScreen -> navigateToRequestsScreen()
+            MainViewEvent.EnterSettingsScreen -> navigateToSettingsScreen()
         }
+    }
+
+    private fun navigateToSettingsScreen() {
+        navController.navigate(Screens.Settings.route)
+    }
+
+    private fun navigateToRequestsScreen() {
+        navController.navigate(Screens.Requests.route)
+    }
+
+    private fun navigateToAccountScreen() {
+        _state.value = _state.value.copy(state = LoadingState.ACCOUNT)
     }
 
     private fun exit() {
         viewModelScope.launch {
             val response = repository.logout()
             if (response.isSuccessful) {
-                navController.backQueue.clear()
-                navController.navigate(Screens.Login.route)
+                _state.value = _state.value.copy(state = LoadingState.LOGIN)
             }
         }
     }
@@ -49,27 +62,21 @@ class MainViewModel @Inject constructor(
 
             if (status != null) {
                 if (status.is_authenticated) {
-                    _state.value = _state.value.copy(state = AuthenticationState.SUCCESS)
-                    delay(2000)
-                    _state.value = _state.value.copy(loadTo = Screens.Account.route)
+                    _state.value = _state.value.copy(state = LoadingState.ACCOUNT)
                 } else {
-                    _state.value = _state.value.copy(state = AuthenticationState.FAILURE)
-                    delay(2000)
-                    _state.value = _state.value.copy(loadTo = Screens.Login.route)
+                    _state.value = _state.value.copy(state = LoadingState.LOGIN)
                 }
-            } else {
-                _state.value = _state.value.copy(state = AuthenticationState.LOADING_ERROR)
             }
         }
     }
 
     private suspend fun getAuthenticationStatus(): AuthenticationStatus? {
         val isAuthenticated = repository.isAuthenticated()
-        if (isAuthenticated.isSuccessful) {
-            return isAuthenticated.body()
+        return if (isAuthenticated.isSuccessful) {
+            isAuthenticated.body()
         } else {
             Log.e("TAG", "Failed to load authentication status ${isAuthenticated.errorBody()}")
-            return null
+            null
         }
     }
 }

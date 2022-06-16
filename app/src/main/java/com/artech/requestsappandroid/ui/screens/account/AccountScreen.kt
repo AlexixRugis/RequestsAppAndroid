@@ -50,7 +50,7 @@ fun AccountScreen(viewModel: AccountViewModel) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     itemsIndexed(tasksInfo.value.tasks) { i, item ->
-                        RepairRequest(task = item, onClicked = {
+                        RepairTask(task = item, onClicked = {
                             viewModel.obtainEvent(AccountViewEvent.RepairRequestClicked(it))
                         })
                     }
@@ -62,7 +62,7 @@ fun AccountScreen(viewModel: AccountViewModel) {
 }
 
 @Composable
-fun RepairRequest(task: RepairTask, onClicked: (id: Int) -> Unit ) {
+fun RepairTask(task: RepairTask, onClicked: (id: Int) -> Unit ) {
     Card(
        elevation = 4.dp,
        modifier = Modifier

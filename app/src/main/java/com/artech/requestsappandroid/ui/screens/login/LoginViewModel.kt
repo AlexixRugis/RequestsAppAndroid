@@ -11,7 +11,9 @@ import com.artech.requestsappandroid.data.remote.api.ApiRepository
 import com.artech.requestsappandroid.data.remote.models.AuthenticationData
 import com.artech.requestsappandroid.ui.screens.login.models.LoginEvent
 import com.artech.requestsappandroid.ui.screens.login.models.LoginViewState
+import com.artech.requestsappandroid.ui.screens.main.MainViewModel
 import com.artech.requestsappandroid.ui.screens.main.Screens
+import com.artech.requestsappandroid.ui.screens.main.models.MainViewEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +24,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val repository: ApiRepository
 ) : ViewModel(), EventHandler<LoginEvent> {
-    lateinit var navController: NavController
+    lateinit var mainViewModel: MainViewModel
     @SuppressLint("StaticFieldLeak")
     lateinit var context: Context
 
@@ -64,7 +66,7 @@ class LoginViewModel @Inject constructor(
                     )
 
                     if (response.isSuccessful) {
-                        navController.navigate(Screens.Account.route)
+                        mainViewModel.obtainEvent(MainViewEvent.LoginApplication)
                     } else {
                         Toast.makeText(
                             context,

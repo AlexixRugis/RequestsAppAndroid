@@ -1,6 +1,8 @@
 package com.artech.requestsappandroid.data.remote.api
 
+import com.artech.requestsappandroid.data.remote.models.AddParts
 import com.artech.requestsappandroid.data.remote.models.AuthenticationData
+import com.artech.requestsappandroid.data.remote.models.PartRequest
 import javax.inject.Inject
 
 class ApiRepository @Inject constructor(private val api: RequestsApi){
@@ -10,7 +12,10 @@ class ApiRepository @Inject constructor(private val api: RequestsApi){
     suspend fun isAuthenticated() = api.isAuthenticated()
     suspend fun getAllAvailableRequests() = api.requests();
     suspend fun getRequest(id: Int) = api.getRequest(id)
+    suspend fun acceptRequest(id: Int) = api.acceptRequest(id)
     suspend fun getTasks() = api.getTasks()
     suspend fun getTask(id: Int) = api.getTask(id)
     suspend fun completeTask(id: Int) = api.completeTask(id)
+    suspend fun getRepairParts() = api.getRepairParts()
+    suspend fun addParts(id: Int, partRequests: AddParts) = api.addParts(id, partRequests)
 }

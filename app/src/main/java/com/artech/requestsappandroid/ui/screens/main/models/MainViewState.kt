@@ -2,15 +2,13 @@ package com.artech.requestsappandroid.ui.screens.main.models
 
 import androidx.compose.runtime.Stable
 
-enum class AuthenticationState {
+enum class LoadingState {
     LOADING,
-    LOADING_ERROR,
-    SUCCESS,
-    FAILURE
+    LOGIN,
+    ACCOUNT
 }
 
 @Stable
 data class MainViewState(
-    val state: AuthenticationState = AuthenticationState.LOADING,
-    val loadTo: String? = null
+    val state: LoadingState = LoadingState.LOADING,
 )
