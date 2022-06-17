@@ -1,6 +1,6 @@
 package com.artech.requestsappandroid.data.remote.api
 
-import com.artech.requestsappandroid.data.remote.models.*
+import com.artech.requestsappandroid.data.remote.dto.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

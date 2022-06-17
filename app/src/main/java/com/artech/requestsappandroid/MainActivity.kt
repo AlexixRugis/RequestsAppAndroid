@@ -3,12 +3,11 @@ package com.artech.requestsappandroid
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.artech.requestsappandroid.ui.screens.main.MainScreen
-import com.artech.requestsappandroid.ui.screens.main.MainViewModel
-import com.artech.requestsappandroid.ui.theme.RequestsAppAndroidTheme
+import com.artech.requestsappandroid.presentation.ui.screens.main.MainScreen
+import com.artech.requestsappandroid.presentation.ui.screens.main.MainViewModel
+import com.artech.requestsappandroid.presentation.ui.theme.RequestsAppAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

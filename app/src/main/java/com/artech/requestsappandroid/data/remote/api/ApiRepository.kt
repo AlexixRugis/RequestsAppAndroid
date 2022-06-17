@@ -1,8 +1,7 @@
 package com.artech.requestsappandroid.data.remote.api
 
-import com.artech.requestsappandroid.data.remote.models.AddParts
-import com.artech.requestsappandroid.data.remote.models.AuthenticationData
-import com.artech.requestsappandroid.data.remote.models.PartRequest
+import com.artech.requestsappandroid.data.remote.dto.AddParts
+import com.artech.requestsappandroid.data.remote.dto.AuthenticationData
 import javax.inject.Inject
 
 class ApiRepository @Inject constructor(private val api: RequestsApi){
