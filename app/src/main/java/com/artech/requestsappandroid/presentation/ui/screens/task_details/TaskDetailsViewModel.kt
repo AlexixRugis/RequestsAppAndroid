@@ -27,6 +27,9 @@ class TaskDetailsViewModel @Inject constructor(
 
     init {
         _id = savedStateHandle.get<String>("taskId")!!.toInt()
+    }
+
+    fun initialize() {
         loadTask()
     }
 
@@ -37,16 +40,6 @@ class TaskDetailsViewModel @Inject constructor(
                     is Resource.Loading -> _state.value = TaskDetailsState(isLoading = true)
                     is Resource.Success -> _state.value = TaskDetailsState(task = it.data)
                     is Resource.Error -> _state.value = TaskDetailsState(error = it.message!!)
-                }
-            }
-        }
-    }
-
-    fun completeTask() {
-        viewModelScope.launch {
-            completeTaskUseCase.invoke(_id).collect {
-                if (it == ActionStatus.Success) {
-                    _state.value = _state.value.copy(isCompleted = true)
                 }
             }
         }

@@ -26,10 +26,11 @@ class RequestDetailsViewModel @Inject constructor(
     val state: StateFlow<RequestDetailsState> = _state
 
     init {
-        savedStateHandle.get<String>("requestId")?.let {
-            _id = it.toInt()
-            getRequestDetails()
-        }
+        _id = savedStateHandle.get<String>("requestId")!!.toInt()
+    }
+
+    fun initialize() {
+        getRequestDetails()
     }
 
     private fun getRequestDetails() {

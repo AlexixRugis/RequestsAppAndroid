@@ -3,7 +3,6 @@ package com.artech.requestsappandroid.domain.use_case.get_task
 import com.artech.requestsappandroid.common.Resource
 import com.artech.requestsappandroid.data.remote.api.ApiRepository
 import com.artech.requestsappandroid.data.remote.dto.RepairTask
-import com.artech.requestsappandroid.domain.models.AccountData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

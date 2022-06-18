@@ -19,15 +19,37 @@ import com.artech.requestsappandroid.presentation.ui.screens.main.Screens
 
 @Composable
 fun AccountScreen(navController: NavController, viewModel: AccountViewModel = hiltViewModel()) {
-    val state = viewModel.state.collectAsState()
+    val accountState = viewModel.accountState.collectAsState()
+    val tasksState = viewModel.tasksState.collectAsState()
 
-
+    LaunchedEffect(key1 = true) {
+        viewModel.enterScreen()
+    }
+    
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        if (state.value.accountData != null) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                AccountData(state.value.accountData!!.employee)
+        Column(modifier = Modifier.fillMaxWidth()) {
+            if (accountState.value.data != null) {
+                AccountData(accountState.value.data!!)
+            }
+
+            if (accountState.value.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(30.dp)
+                )
+            }
+
+
+            if (accountState.value.error.isNotEmpty()) {
+                Text(
+                    text = accountState.value.error,
+                    modifier = Modifier.padding(20.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            if (tasksState.value.data != null) {
                 Text(
                     text = "Принятые заявки",
                     modifier = Modifier.padding(10.dp),
@@ -36,28 +58,28 @@ fun AccountScreen(navController: NavController, viewModel: AccountViewModel = hi
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    itemsIndexed(state.value.accountData!!.tasks) { i, item ->
+                    itemsIndexed(tasksState.value.data?:emptyList()) { i, item ->
                         RepairTask(task = item, onClicked = {
                             navController.navigate(Screens.TaskDetails.route + "/${item.id}")
                         })
                     }
                 }
             }
-        }
 
-        if (state.value.isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(30.dp)
-            )
-        }
+            if (tasksState.value.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(30.dp)
+                )
+            }
 
 
-        if (state.value.error.isNotEmpty()) {
-            Text(
-                text = state.value.error,
-                modifier = Modifier.padding(20.dp),
-                textAlign = TextAlign.Center
-            )
+            if (tasksState.value.error.isNotEmpty()) {
+                Text(
+                    text = accountState.value.error,
+                    modifier = Modifier.padding(20.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }

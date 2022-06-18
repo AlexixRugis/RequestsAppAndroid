@@ -1,4 +1,4 @@
-package com.artech.requestsappandroid.presentation.ui.select_parts
+package com.artech.requestsappandroid.presentation.ui.screens.select_parts
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -7,6 +7,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -22,10 +23,14 @@ import com.artech.requestsappandroid.presentation.ui.screens.main.Screens
 fun SelectPartsScreen(navController: NavController, taskId: Int, viewModel: SelectPartsViewModel = hiltViewModel()) {
     val state = viewModel.state.collectAsState()
 
+    LaunchedEffect(key1 = true) {
+        viewModel.initialize()
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        if (state.value.parts != null) {
+        if (state.value.data != null) {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -37,7 +42,7 @@ fun SelectPartsScreen(navController: NavController, taskId: Int, viewModel: Sele
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    itemsIndexed(state.value.parts!!) { i, item ->
+                    itemsIndexed(state.value.data?: emptyList()) { i, item ->
                         RepairPartView(part = item, onClick = {
                             navController.navigate(Screens.TaskRepairParts.route + "/${taskId}/${item.id}")
                         })

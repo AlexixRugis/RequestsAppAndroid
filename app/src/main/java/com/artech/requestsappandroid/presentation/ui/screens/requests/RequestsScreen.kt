@@ -9,6 +9,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -23,43 +24,48 @@ import com.artech.requestsappandroid.presentation.ui.screens.main.Screens
 fun RequestsScreen(navController: NavController, viewModel: RequestsViewModel = hiltViewModel()) {
     val state = viewModel.state.collectAsState()
 
+    LaunchedEffect(key1 = true) {
+        viewModel.initialize()
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        if (state.value.requests != null) {
-            Column(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = "Доступные заявки",
-                    modifier = Modifier.padding(10.dp),
-                    fontSize = 22.sp
-                )
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Доступные заявки",
+                modifier = Modifier.padding(10.dp),
+                fontSize = 22.sp
+            )
+            if (state.value.data != null) {
+
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    itemsIndexed(state.value.requests!!) { i, item ->
+                    itemsIndexed(state.value.data ?: emptyList()) { i, item ->
                         RepairRequest(request = item, onClicked = {
                             navController.navigate(Screens.RequestDetails.route + "/${item.id}")
                         })
                     }
                 }
             }
-        }
 
-        if (state.value.isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(30.dp)
-            )
-        }
+            if (state.value.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(30.dp)
+                )
+            }
 
 
-        if (state.value.error.isNotEmpty()) {
-            Text(
-                text = state.value.error,
-                modifier = Modifier.padding(20.dp),
-                textAlign = TextAlign.Center
-            )
+            if (state.value.error.isNotEmpty()) {
+                Text(
+                    text = state.value.error,
+                    modifier = Modifier.padding(20.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
 
     }

@@ -21,17 +21,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.artech.requestsappandroid.presentation.ui.screens.request_details.RequestDetailsScreen
 import com.artech.requestsappandroid.presentation.ui.screens.account.AccountScreen
 import com.artech.requestsappandroid.presentation.ui.screens.add_part.AddPartScreen
+import com.artech.requestsappandroid.presentation.ui.screens.change_password.ChangePasswordScreen
+import com.artech.requestsappandroid.presentation.ui.screens.complete_task.CompleteTaskScreen
 import com.artech.requestsappandroid.presentation.ui.screens.login.LoginScreen
 import com.artech.requestsappandroid.presentation.ui.screens.login.LoginViewModel
 import com.artech.requestsappandroid.presentation.ui.screens.main.models.LoadingState
 import com.artech.requestsappandroid.presentation.ui.screens.main.models.MainViewEvent
 import com.artech.requestsappandroid.presentation.ui.screens.requests.RequestsScreen
 import com.artech.requestsappandroid.presentation.ui.screens.task_details.TaskDetailsScreen
-import com.artech.requestsappandroid.presentation.ui.screens.task_details.TaskDetailsViewModel
-import com.artech.requestsappandroid.presentation.ui.select_parts.SelectPartsScreen
+import com.artech.requestsappandroid.presentation.ui.screens.select_parts.SelectPartsScreen
+import com.artech.requestsappandroid.presentation.ui.screens.settings.SettingsScreen
 import com.artech.requestsappandroid.utils.Constants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -43,6 +46,8 @@ sealed class Screens(val route: String) {
     object RequestDetails: Screens(Constants.Screens.REQUEST_DETAILS_SCREEN)
     object TaskDetails: Screens(Constants.Screens.TASK_DETAILS_SCREEN)
     object TaskRepairParts: Screens(Constants.Screens.TASK_REPAIR_PARTS)
+    object ChangePassword: Screens(Constants.Screens.CHANGE_PASSWORD)
+    object CompleteTask: Screens(Constants.Screens.COMPLETE_TASK)
 }
 
 @Composable
@@ -161,6 +166,9 @@ fun MainView(navController: NavHostController, viewModel: MainViewModel) {
                 composable(Screens.TaskDetails.route + "/{taskId}") {
                     TaskDetailsScreen(navController, it.arguments!!.getString("taskId")!!.toInt())
                 }
+                composable(Screens.CompleteTask.route + "/{taskId}") {
+                    CompleteTaskScreen(navController = navController)
+                }
                 composable(Screens.TaskRepairParts.route + "/{taskId}") {
                     SelectPartsScreen(navController, it.arguments!!.getString("taskId")!!.toInt())
                 }
@@ -168,7 +176,10 @@ fun MainView(navController: NavHostController, viewModel: MainViewModel) {
                     AddPartScreen(navController)
                 }
                 composable(Screens.Settings.route) {
-
+                    SettingsScreen(navController = navController)
+                }
+                composable(Screens.ChangePassword.route) {
+                    ChangePasswordScreen(navController)
                 }
             }
         }

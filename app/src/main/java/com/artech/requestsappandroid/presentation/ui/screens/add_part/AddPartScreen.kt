@@ -3,6 +3,7 @@ package com.artech.requestsappandroid.presentation.ui.screens.add_part
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -11,10 +12,15 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.artech.requestsappandroid.presentation.ui.components.RepairPartView
+import com.artech.requestsappandroid.presentation.ui.screens.main.Screens
 
 @Composable
 fun AddPartScreen(navController: NavController, viewModel: AddPartViewModel = hiltViewModel()) {
     val state = viewModel.state.collectAsState()
+
+    LaunchedEffect(key1 = true) {
+        viewModel.initialize()
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize()

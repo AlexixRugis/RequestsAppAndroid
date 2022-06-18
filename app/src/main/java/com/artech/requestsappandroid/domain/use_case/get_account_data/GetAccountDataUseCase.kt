@@ -2,7 +2,7 @@ package com.artech.requestsappandroid.domain.use_case.get_account_data
 
 import com.artech.requestsappandroid.common.Resource
 import com.artech.requestsappandroid.data.remote.api.ApiRepository
-import com.artech.requestsappandroid.domain.models.AccountData
+import com.artech.requestsappandroid.data.remote.dto.Employee
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -12,26 +12,21 @@ import javax.inject.Inject
 class GetAccountDataUseCase @Inject constructor(
     private val repository: ApiRepository
 ) {
-    operator fun invoke(): Flow<Resource<AccountData>> = flow {
+    operator fun invoke(): Flow<Resource<Employee>> = flow {
         try {
-            emit(Resource.Loading<AccountData>())
+            emit(Resource.Loading<Employee>())
             val employeeResponse = repository.getAccount()
-            val tasksResponse = repository.getTasks()
 
-            if (employeeResponse.isSuccessful && tasksResponse.isSuccessful) {
-                emit(Resource.Success<AccountData>(
-                    AccountData(
-                        employeeResponse.body()!!,
-                        tasksResponse.body()!!
-                    )
+            if (employeeResponse.isSuccessful) {
+                emit(Resource.Success<Employee>(employeeResponse.body()!!,
                 ))
             } else {
-                emit(Resource.Error<AccountData>("Ошибка при получении данных с сервера"))
+                emit(Resource.Error<Employee>("Ошибка при получении данных с сервера"))
             }
         } catch (e: HttpException) {
-            emit(Resource.Error<AccountData>("Ошибка при получении данных с сервера"))
+            emit(Resource.Error<Employee>("Ошибка при получении данных с сервера"))
         } catch (e: IOException) {
-            emit(Resource.Error<AccountData>("Ошибка подключения к серверу"))
+            emit(Resource.Error<Employee>("Ошибка подключения к серверу"))
         }
     }
 }

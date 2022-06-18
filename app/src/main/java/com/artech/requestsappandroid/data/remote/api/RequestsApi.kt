@@ -18,6 +18,9 @@ interface RequestsApi {
     @GET("account/")
     suspend fun getAccount(): Response<Employee>
 
+    @POST("change_password/")
+    suspend fun changePassword(@Body data: ChangePasswordData) : Response<ResponseDetails>
+
     @GET("is_authenticated/")
     suspend fun isAuthenticated() : Response<AuthenticationStatus>
 

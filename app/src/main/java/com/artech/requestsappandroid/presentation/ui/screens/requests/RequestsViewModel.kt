@@ -1,11 +1,14 @@
 package com.artech.requestsappandroid.presentation.ui.screens.requests
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.artech.requestsappandroid.common.DataLoadingState
 import com.artech.requestsappandroid.common.EventHandler
 import com.artech.requestsappandroid.common.Resource
 import com.artech.requestsappandroid.data.remote.api.ApiRepository
+import com.artech.requestsappandroid.data.remote.dto.RepairRequests
 import com.artech.requestsappandroid.domain.use_case.get_request.GetRequestsUseCase
 import com.artech.requestsappandroid.presentation.ui.screens.main.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,12 +22,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RequestsViewModel @Inject constructor(
-    private val getRequestsUseCase: GetRequestsUseCase
+    private val getRequestsUseCase: GetRequestsUseCase,
 ) : ViewModel() {
-    private val _state = MutableStateFlow(RequestsViewState())
-    val state : StateFlow<RequestsViewState> = _state
+    private val _state = MutableStateFlow(DataLoadingState<RepairRequests>())
+    val state : StateFlow<DataLoadingState<RepairRequests>> = _state
 
-    init {
+    fun initialize() {
         getRequests()
     }
 
@@ -32,9 +35,9 @@ class RequestsViewModel @Inject constructor(
         viewModelScope.launch {
             getRequestsUseCase.invoke().collect {
                 when (it) {
-                    is Resource.Loading -> _state.value = RequestsViewState(isLoading = true)
-                    is Resource.Success -> _state.value = RequestsViewState(requests = it.data)
-                    is Resource.Error -> _state.value = RequestsViewState(error = it.message!!)
+                    is Resource.Loading -> _state.value = DataLoadingState(isLoading = true)
+                    is Resource.Success -> _state.value = DataLoadingState(data = it.data)
+                    is Resource.Error -> _state.value = DataLoadingState(error = it.message!!)
                 }
             }
         }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -26,6 +27,10 @@ import com.artech.requestsappandroid.presentation.ui.screens.main.Screens
 fun TaskDetailsScreen(navController: NavController, taskId: Int, viewModel: TaskDetailsViewModel = hiltViewModel()) {
     val state = viewModel.state.collectAsState()
 
+    LaunchedEffect(key1 = true) {
+        viewModel.initialize()
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -33,7 +38,7 @@ fun TaskDetailsScreen(navController: NavController, taskId: Int, viewModel: Task
             ShowInfo(
                 task = state.value.task!!,
                 onClickAddParts = { navController.navigate(Screens.TaskRepairParts.route + "/${taskId}") },
-                onClickCompleteTask = { viewModel.completeTask() }
+                onClickCompleteTask = { navController.navigate(Screens.CompleteTask.route + "/${taskId}") }
             )
         }
 

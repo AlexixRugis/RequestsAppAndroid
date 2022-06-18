@@ -10,7 +10,6 @@ import com.artech.requestsappandroid.domain.use_case.get_repair_part.GetRepairPa
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,6 +29,9 @@ class AddPartViewModel @Inject constructor(
         _taskId = savedStateHandle.get<String>("taskId")!!.toInt()
         _partId = savedStateHandle.get<String>("partId")!!.toInt()
 
+    }
+
+    fun initialize() {
         loadPart()
     }
 
