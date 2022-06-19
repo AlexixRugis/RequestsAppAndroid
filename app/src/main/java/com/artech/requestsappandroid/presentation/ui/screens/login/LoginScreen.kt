@@ -21,81 +21,86 @@ import com.artech.requestsappandroid.presentation.ui.screens.login.models.LoginE
 fun LoginScreen(viewModel: LoginViewModel) {
     val loginState = viewModel.loginState.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.background,
     ) {
-        Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = Color.Blue)) {
-                append("S")
-            }
-            withStyle(style = SpanStyle(color = Color.Black)) {
-                append("ign")
-            }
-            withStyle(style = SpanStyle(color = Color.Blue)) {
-                append(" I")
-            }
-            withStyle(style = SpanStyle(color = Color.Black)) {
-                append("n")
-            }
-        }, fontSize = 30.sp)
-        Spacer(Modifier.size(16.dp))
-        OutlinedTextField(
-            value = loginState.value.email,
-            onValueChange = {
-                viewModel.obtainEvent(LoginEvent.EmailChanged(it))
-            },
-            isError = loginState.value.emailErrorState,
-            modifier = Modifier.fillMaxWidth(),
-            enabled = loginState.value.isFormActive,
-            label = {
-                Text(text = "Enter Email*")
-            }
-        )
-        if (loginState.value.emailErrorState) {
-            Text(text = "Required", color = Color.Red)
-        }
-        Spacer(Modifier.size(16.dp))
-        OutlinedTextField(
-            value = loginState.value.password,
-            onValueChange = {
-                viewModel.obtainEvent(LoginEvent.PasswordChanged(it))
-            },
-            isError = loginState.value.passwordErrorState,
-            modifier = Modifier.fillMaxWidth(),
-            enabled = loginState.value.isFormActive,
-            label = {
-                Text(text = "Enter Password*")
-            },
-            trailingIcon = {
-                IconButton(onClick = {
-                    viewModel.obtainEvent(LoginEvent.ChangePasswordVisibility)
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Info,
-                        contentDescription = "visibility",
-                        tint = if (loginState.value.isPasswordHidden) Color.Gray else Color.Blue
-                    )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(text = buildAnnotatedString {
+                withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
+                    append("S")
                 }
-            },
-            visualTransformation = if (loginState.value.isPasswordHidden) PasswordVisualTransformation() else VisualTransformation.None
-        )
-        if (loginState.value.passwordErrorState) {
-            Text(text = "Required", color = Color.Red)
+                withStyle(style = SpanStyle(color = MaterialTheme.colors.onBackground)) {
+                    append("ign")
+                }
+                withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
+                    append(" I")
+                }
+                withStyle(style = SpanStyle(color = MaterialTheme.colors.onBackground)) {
+                    append("n")
+                }
+            }, fontSize = 30.sp)
+            Spacer(Modifier.size(16.dp))
+            OutlinedTextField(
+                value = loginState.value.email,
+                onValueChange = {
+                    viewModel.obtainEvent(LoginEvent.EmailChanged(it))
+                },
+                isError = loginState.value.emailErrorState,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = loginState.value.isFormActive,
+                label = {
+                    Text(text = "Enter Email*")
+                }
+            )
+            if (loginState.value.emailErrorState) {
+                Text(text = "Required", color = MaterialTheme.colors.error)
+            }
+            Spacer(Modifier.size(16.dp))
+            OutlinedTextField(
+                value = loginState.value.password,
+                onValueChange = {
+                    viewModel.obtainEvent(LoginEvent.PasswordChanged(it))
+                },
+                isError = loginState.value.passwordErrorState,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = loginState.value.isFormActive,
+                label = {
+                    Text(text = "Enter Password*")
+                },
+                trailingIcon = {
+                    IconButton(onClick = {
+                        viewModel.obtainEvent(LoginEvent.ChangePasswordVisibility)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "visibility",
+                            tint = if (loginState.value.isPasswordHidden) Color.Gray else MaterialTheme.colors.primary
+                        )
+                    }
+                },
+                visualTransformation = if (loginState.value.isPasswordHidden) PasswordVisualTransformation() else VisualTransformation.None
+            )
+            if (loginState.value.passwordErrorState) {
+                Text(text = "Required", color = MaterialTheme.colors.error)
+            }
+            Spacer(Modifier.size(16.dp))
+            Button(
+                onClick = {
+                    viewModel.obtainEvent(LoginEvent.Login)
+                },
+                enabled = loginState.value.isFormActive,
+                content = {
+                    Text(text = "Login", color = MaterialTheme.colors.onPrimary)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
+            )
         }
-        Spacer(Modifier.size(16.dp))
-        Button(
-            onClick = {
-                viewModel.obtainEvent(LoginEvent.Login)
-            },
-            enabled = loginState.value.isFormActive,
-            content = {
-                Text(text = "Login", color = Color.White)
-            },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
-        )
     }
 }

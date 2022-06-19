@@ -11,4 +11,5 @@ enum class LoadingState {
 @Stable
 data class MainViewState(
     val state: LoadingState = LoadingState.LOADING,
+    val darkTheme: Boolean = false
 )

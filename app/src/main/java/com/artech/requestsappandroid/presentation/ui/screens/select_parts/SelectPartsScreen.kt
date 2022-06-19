@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -29,14 +30,16 @@ fun SelectPartsScreen(navController: NavController, taskId: Int, viewModel: Sele
     }
 
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(10.dp),
+        color = MaterialTheme.colors.background
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 text = "Запчасти",
-                fontSize = 24.sp,
+                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.h5,
                 fontWeight = FontWeight.SemiBold
             )
             SearchView(onClickSearch = { viewModel.updateParts(it) })
@@ -58,6 +61,8 @@ fun SelectPartsScreen(navController: NavController, taskId: Int, viewModel: Sele
             if (state.value.error.isNotEmpty()) {
                 Text(
                     text = state.value.error,
+                    color = MaterialTheme.colors.error,
+                    style = MaterialTheme.typography.body1,
                     modifier = Modifier.padding(20.dp),
                     textAlign = TextAlign.Center
                 )

@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,8 +20,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.artech.requestsappandroid.presentation.ui.screens.request_details.RequestDetailsScreen
 import com.artech.requestsappandroid.presentation.ui.screens.account.AccountScreen
 import com.artech.requestsappandroid.presentation.ui.screens.add_part.AddPartScreen
 import com.artech.requestsappandroid.presentation.ui.screens.change_password.ChangePasswordScreen
@@ -31,10 +28,11 @@ import com.artech.requestsappandroid.presentation.ui.screens.login.LoginScreen
 import com.artech.requestsappandroid.presentation.ui.screens.login.LoginViewModel
 import com.artech.requestsappandroid.presentation.ui.screens.main.models.LoadingState
 import com.artech.requestsappandroid.presentation.ui.screens.main.models.MainViewEvent
+import com.artech.requestsappandroid.presentation.ui.screens.request_details.RequestDetailsScreen
 import com.artech.requestsappandroid.presentation.ui.screens.requests.RequestsScreen
-import com.artech.requestsappandroid.presentation.ui.screens.task_details.TaskDetailsScreen
 import com.artech.requestsappandroid.presentation.ui.screens.select_parts.SelectPartsScreen
 import com.artech.requestsappandroid.presentation.ui.screens.settings.SettingsScreen
+import com.artech.requestsappandroid.presentation.ui.screens.task_details.TaskDetailsScreen
 import com.artech.requestsappandroid.utils.Constants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -176,7 +174,7 @@ fun MainView(navController: NavHostController, viewModel: MainViewModel) {
                     AddPartScreen(navController)
                 }
                 composable(Screens.Settings.route) {
-                    SettingsScreen(navController = navController)
+                    SettingsScreen(navController = navController, viewModel = viewModel)
                 }
                 composable(Screens.ChangePassword.route) {
                     ChangePasswordScreen(navController)
@@ -188,9 +186,9 @@ fun MainView(navController: NavHostController, viewModel: MainViewModel) {
 
 @Composable
 fun SplashScreen() {
-    Box(
+    Surface(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        color = MaterialTheme.colors.background,
     ) {
         val isAnimating = remember { mutableStateOf(false) }
         val alphaAnimation = animateFloatAsState(
@@ -199,14 +197,20 @@ fun SplashScreen() {
         )
         LaunchedEffect(key1 = true, block = { isAnimating.value = true })
 
-        Icon(
-            modifier = Modifier
-                .size(120.dp)
-                .scale(alphaAnimation.value)
-                .alpha(alphaAnimation.value),
-            imageVector = Icons.Default.Person,
-            contentDescription = "",
-            tint = Color.Black
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                modifier = Modifier
+                    .size(120.dp)
+
+                    .scale(alphaAnimation.value)
+                    .alpha(alphaAnimation.value),
+                imageVector = Icons.Default.Person,
+                contentDescription = "",
+                tint = MaterialTheme.colors.onBackground
+            )
+        }
     }
 }

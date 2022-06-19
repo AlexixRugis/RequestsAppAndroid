@@ -1,10 +1,7 @@
 package com.artech.requestsappandroid.presentation.ui.screens.change_password
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -21,7 +18,8 @@ fun ChangePasswordScreen(navController: NavController, viewModel: ChangePassword
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .padding(10.dp)
+            .padding(10.dp),
+        color = MaterialTheme.colors.background
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -34,7 +32,7 @@ fun ChangePasswordScreen(navController: NavController, viewModel: ChangePassword
                 isError = state.value.passwordError.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth(),
                 label = {
-                    Text(text = "Введите новый пароль*")
+                    Text(text = "Введите новый пароль*", style = MaterialTheme.typography.body1)
                 },
                 visualTransformation = PasswordVisualTransformation()
             )
@@ -47,12 +45,12 @@ fun ChangePasswordScreen(navController: NavController, viewModel: ChangePassword
                 isError = state.value.passwordError.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth(),
                 label = {
-                    Text(text = "Подтвердите пароль*")
+                    Text(text = "Подтвердите пароль*", style = MaterialTheme.typography.body1,)
                 },
                 visualTransformation = PasswordVisualTransformation()
             )
             if (state.value.passwordError.isNotEmpty()) {
-                Text(text = state.value.passwordError, color = Color.Red)
+                Text(text = state.value.passwordError, color = MaterialTheme.colors.error, style = MaterialTheme.typography.body1,)
             }
 
             Spacer(modifier = Modifier.weight(1f, true))
@@ -60,11 +58,13 @@ fun ChangePasswordScreen(navController: NavController, viewModel: ChangePassword
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { viewModel.submit() },
-                enabled = state.value.passwordError.isEmpty()
+                enabled = state.value.passwordError.isEmpty(),
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
             ) {
                 Text(
                     text = "Сохранить",
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(10.dp),
+                    style = MaterialTheme.typography.body1,
                 )
             }
         }

@@ -11,4 +11,9 @@ class Constants{
         const val CHANGE_PASSWORD = "change_password"
         const val COMPLETE_TASK = "complete_task"
     }
+
+    object SharedPreferences {
+        const val APP_NAME = "com.artech.requestsappandroid"
+        const val DARK_THEME = "darkTheme"
+    }
 }

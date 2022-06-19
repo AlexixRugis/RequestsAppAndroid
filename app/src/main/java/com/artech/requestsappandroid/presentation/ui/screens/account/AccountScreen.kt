@@ -27,7 +27,8 @@ fun AccountScreen(navController: NavController, viewModel: AccountViewModel = hi
     }
     
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.background
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             if (accountState.value.data != null) {
@@ -44,6 +45,7 @@ fun AccountScreen(navController: NavController, viewModel: AccountViewModel = hi
             if (accountState.value.error.isNotEmpty()) {
                 Text(
                     text = accountState.value.error,
+                    style = MaterialTheme.typography.body1,
                     modifier = Modifier.padding(20.dp),
                     textAlign = TextAlign.Center
                 )
@@ -52,6 +54,7 @@ fun AccountScreen(navController: NavController, viewModel: AccountViewModel = hi
             if (tasksState.value.data != null) {
                 Text(
                     text = "Принятые заявки",
+                    style = MaterialTheme.typography.h5,
                     modifier = Modifier.padding(10.dp),
                     fontSize = 22.sp
                 )
@@ -76,6 +79,7 @@ fun AccountScreen(navController: NavController, viewModel: AccountViewModel = hi
             if (tasksState.value.error.isNotEmpty()) {
                 Text(
                     text = accountState.value.error,
+                    style = MaterialTheme.typography.body1,
                     modifier = Modifier.padding(20.dp),
                     textAlign = TextAlign.Center
                 )
@@ -87,13 +91,14 @@ fun AccountScreen(navController: NavController, viewModel: AccountViewModel = hi
 @Composable
 fun RepairTask(task: RepairTask, onClicked: (id: Int) -> Unit ) {
     Card(
-       elevation = 4.dp,
+       elevation = 1.dp,
        modifier = Modifier
-           .padding(top = 8.dp)
+           .padding(top = 10.dp)
            .fillMaxWidth()
            .clickable {
                onClicked(task.id)
-           }
+           },
+        backgroundColor = MaterialTheme.colors.surface
     ) {
         Row(
             modifier = Modifier
@@ -103,11 +108,11 @@ fun RepairTask(task: RepairTask, onClicked: (id: Int) -> Unit ) {
             Column() {
                 Text(
                     text = task.request.org_name,
-                    fontSize = 20.sp
+                    style = MaterialTheme.typography.body1
                 )
                 Text(
                     text = task.request.name,
-                    fontSize = 16.sp
+                    style = MaterialTheme.typography.body2
                 )
             }
         }
@@ -117,7 +122,7 @@ fun RepairTask(task: RepairTask, onClicked: (id: Int) -> Unit ) {
 @Composable
 fun AccountData(employee: Employee) {
     Surface(
-        color = MaterialTheme.colors.primarySurface,
+        color = MaterialTheme.colors.primary,
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -128,18 +133,18 @@ fun AccountData(employee: Employee) {
             Column() {
                 Text(
                     text = employee.name,
-                    fontSize = 24.sp,
-                    color = Color.White
+                    style = MaterialTheme.typography.h5,
+                    color = MaterialTheme.colors.onPrimary
                 )
                 Text(
                     text = employee.phone_number,
-                    fontSize = 14.sp,
-                    color = Color.LightGray
+                    style = MaterialTheme.typography.subtitle1,
+                    color = MaterialTheme.colors.onPrimary
                 )
                 Text(
                     text = employee.post.name,
-                    fontSize = 14.sp,
-                    color = Color.LightGray
+                    style = MaterialTheme.typography.subtitle2,
+                    color = MaterialTheme.colors.onPrimary
                 )
             }
         }

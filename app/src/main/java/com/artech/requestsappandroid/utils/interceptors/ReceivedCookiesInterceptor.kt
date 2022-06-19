@@ -1,6 +1,7 @@
 package com.artech.requestsappandroid.utils.interceptors
 
 import android.content.Context
+import com.artech.requestsappandroid.utils.Constants
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.*
@@ -11,7 +12,7 @@ class ReceivedCookiesInterceptor(private val context: Context) : Interceptor {
         val originalResponse: Response = chain.proceed(chain.request())
         if (!originalResponse.headers("Set-Cookie").isEmpty()) {
             val sharedPreferences = context.getSharedPreferences(
-                "com.artech.requestsappandroid", Context.MODE_PRIVATE
+                Constants.SharedPreferences.APP_NAME, Context.MODE_PRIVATE
             )
             val memes = sharedPreferences.edit()
 

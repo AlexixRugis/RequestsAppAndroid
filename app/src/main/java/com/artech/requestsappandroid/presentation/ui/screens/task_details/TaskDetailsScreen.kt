@@ -1,5 +1,6 @@
 package com.artech.requestsappandroid.presentation.ui.screens.task_details
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -7,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -36,7 +38,8 @@ fun TaskDetailsScreen(navController: NavController, taskId: Int, viewModel: Task
     }
 
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(10.dp),
+        color = MaterialTheme.colors.background
     ) {
         if (state.value.task != null) {
             ShowInfo(
@@ -56,6 +59,8 @@ fun TaskDetailsScreen(navController: NavController, taskId: Int, viewModel: Task
         if (state.value.error.isNotEmpty()) {
             Text(
                 text = state.value.error,
+                color = MaterialTheme.colors.error,
+                style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(20.dp),
                 textAlign = TextAlign.Center
             )
@@ -78,7 +83,8 @@ fun ShowInfo(task: RepairTask, onClickAddParts: () -> Unit, onClickCompleteTask:
             )
             Text(
                 text = "Добавленные запчасти",
-                fontSize = 24.sp,
+                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.h5,
                 fontWeight = FontWeight.SemiBold
             )
             LazyColumn(
@@ -92,11 +98,13 @@ fun ShowInfo(task: RepairTask, onClickAddParts: () -> Unit, onClickCompleteTask:
                 }
             }
             OutlinedButton(
-                onClick = { onClickAddParts() }
+                onClick = { onClickAddParts() },
+                modifier = Modifier.align(Alignment.End)
             ) {
                 Text(
                     text = "Добавить запчасти",
-                    fontSize = 16.sp
+                    color = MaterialTheme.colors.onSurface,
+                    style = MaterialTheme.typography.button,
                 )
             }
 
@@ -114,7 +122,6 @@ fun ShowInfo(task: RepairTask, onClickAddParts: () -> Unit, onClickCompleteTask:
             ) {
                 Text(
                     text = "Завершить",
-                    fontSize = 16.sp
                 )
             }
         }
@@ -124,8 +131,11 @@ fun ShowInfo(task: RepairTask, onClickAddParts: () -> Unit, onClickCompleteTask:
 @Composable
 fun RepairPartRequest(request: PartRequest) {
     Card(
-       elevation = 8.dp,
-       modifier = Modifier.padding(top=10.dp)
+       elevation = 1.dp,
+       modifier = Modifier.padding(top=10.dp).background(
+           MaterialTheme.colors.surface,
+           MaterialTheme.shapes.small
+       ),
     ) {
         Column(
             modifier = Modifier
@@ -137,20 +147,25 @@ fun RepairPartRequest(request: PartRequest) {
             ) {
                 Text(
                     text = request.part.name,
+                    color = MaterialTheme.colors.onSurface,
+                    style = MaterialTheme.typography.body1,
                     modifier = Modifier.padding(end = 15.dp)
                 )
                 Spacer(modifier = Modifier.weight(1f, true))
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = if (request.is_completed) Color.Green else Color.Red)) {
+                        withStyle(style = SpanStyle(color = if (request.is_completed) MaterialTheme.colors.primary else MaterialTheme.colors.error)) {
                             append(if (request.is_completed) "В наличии" else "Заказано")
                         }
                     },
+                    style = MaterialTheme.typography.body1,
                     modifier = Modifier.padding(end = 15.dp)
                 )
             }
             Text(
                 text = "${request.part.price} руб. * ${request.amount}",
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(end = 15.dp)
             )
         }

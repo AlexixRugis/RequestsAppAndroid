@@ -22,7 +22,8 @@ fun AddPartScreen(navController: NavController, viewModel: AddPartViewModel = hi
     }
 
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(10.dp),
+        color = MaterialTheme.colors.background
     ) {
         if (state.value.repairPart != null) {
             Column(
@@ -45,11 +46,12 @@ fun AddPartScreen(navController: NavController, viewModel: AddPartViewModel = hi
                     onClick = {
                         viewModel.addPart()
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
                 ) {
                     Text(
                         text = "Добавить",
-                        fontSize = 16.sp
+                        style = MaterialTheme.typography.button
                     )
                 }
             }
@@ -65,6 +67,7 @@ fun AddPartScreen(navController: NavController, viewModel: AddPartViewModel = hi
         if (state.value.error.isNotEmpty()) {
             Text(
                 text = state.value.error,
+                style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(20.dp),
                 textAlign = TextAlign.Center
             )

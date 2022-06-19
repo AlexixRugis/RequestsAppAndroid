@@ -1,10 +1,7 @@
 package com.artech.requestsappandroid.presentation.ui.screens.request_details
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -15,7 +12,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.artech.requestsappandroid.presentation.ui.components.RepairRequestView
-import com.artech.requestsappandroid.presentation.ui.screens.main.Screens
 
 @Composable
 fun RequestDetailsScreen(navController: NavController, viewModel: RequestDetailsViewModel = hiltViewModel()) {
@@ -26,7 +22,8 @@ fun RequestDetailsScreen(navController: NavController, viewModel: RequestDetails
     }
 
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(10.dp),
+        color = MaterialTheme.colors.background
     ) {
         if (state.value.request != null) {
             Column(
@@ -40,10 +37,12 @@ fun RequestDetailsScreen(navController: NavController, viewModel: RequestDetails
                     onClick = {
                         viewModel.acceptRequest()
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
                 ) {
                     Text(
                         text = "Принять",
+                        style = MaterialTheme.typography.body1,
                         fontSize = 16.sp
                     )
                 }
@@ -60,6 +59,8 @@ fun RequestDetailsScreen(navController: NavController, viewModel: RequestDetails
         if (state.value.error.isNotEmpty()) {
             Text(
                 text = state.value.error,
+                color = MaterialTheme.colors.error,
+                style = MaterialTheme.typography.body1,
                 modifier = Modifier.padding(20.dp),
                 textAlign = TextAlign.Center
             )

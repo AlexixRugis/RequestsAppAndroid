@@ -15,7 +15,8 @@ private val DarkColorPalette = darkColors(
 private val LightColorPalette = lightColors(
         primary = Purple500,
         primaryVariant = Purple700,
-        secondary = Teal200
+        secondary = Teal200,
+        surface = gray
 
         /* Other default colors to override
     background = Color.White,
@@ -39,6 +40,6 @@ fun RequestsAppAndroidTheme(darkTheme: Boolean = isSystemInDarkTheme(), content:
             colors = colors,
             typography = Typography,
             shapes = Shapes,
-            content = content
+            content = content,
     )
 }

@@ -3,10 +3,7 @@ package com.artech.requestsappandroid.presentation.ui.screens.complete_task
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -32,7 +29,8 @@ fun CompleteTaskScreen(navController: NavController, viewModel: CompleteTaskView
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .padding(10.dp)
+            .padding(10.dp),
+        color = MaterialTheme.colors.background
     ) {
         Column(
             modifier = Modifier
@@ -40,21 +38,26 @@ fun CompleteTaskScreen(navController: NavController, viewModel: CompleteTaskView
         ) {
             Text(
                 text = "Для завершения вам нужно прикрепить фотоотчёт",
+                style = MaterialTheme.typography.subtitle1,
                 modifier = Modifier
                     .fillMaxWidth()
             )
             if (state.value.error.isNotEmpty()) {
                 Text(
-                    text = state.value.error
+                    text = state.value.error,
+                    color = MaterialTheme.colors.error,
+                    style = MaterialTheme.typography.body1,
                 )
             }
             Spacer(modifier = Modifier.weight(1f, true))
             Button(
                 onClick = { launcher.launch("image/*") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
             ) {
                 Text(
-                    text = "Выбрать фото"
+                    text = "Выбрать фото",
+                    style = MaterialTheme.typography.body1,
                 )
             }
 

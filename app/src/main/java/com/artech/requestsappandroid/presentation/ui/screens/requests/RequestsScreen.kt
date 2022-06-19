@@ -1,13 +1,11 @@
 package com.artech.requestsappandroid.presentation.ui.screens.requests
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,13 +27,16 @@ fun RequestsScreen(navController: NavController, viewModel: RequestsViewModel = 
     }
 
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(10.dp),
+        color = MaterialTheme.colors.background
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 text = "Доступные заявки",
+                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.h5,
                 modifier = Modifier.padding(10.dp),
                 fontSize = 22.sp
             )
@@ -62,6 +63,8 @@ fun RequestsScreen(navController: NavController, viewModel: RequestsViewModel = 
             if (state.value.error.isNotEmpty()) {
                 Text(
                     text = state.value.error,
+                    color = MaterialTheme.colors.error,
+                    style = MaterialTheme.typography.body1,
                     modifier = Modifier.padding(20.dp),
                     textAlign = TextAlign.Center
                 )
@@ -74,13 +77,16 @@ fun RequestsScreen(navController: NavController, viewModel: RequestsViewModel = 
 @Composable
 fun RepairRequest(request: RepairRequest, onClicked: (id: Int) -> Unit ) {
     Card(
-        elevation = 4.dp,
+        elevation = 1.dp,
         modifier = Modifier
-            .padding(top = 8.dp)
+            .padding(top = 10.dp)
             .fillMaxWidth()
             .clickable {
                 onClicked(request.id)
-            }
+            }.background(
+                MaterialTheme.colors.surface,
+                MaterialTheme.shapes.small
+            ),
     ) {
         Row(
             modifier = Modifier
@@ -90,11 +96,13 @@ fun RepairRequest(request: RepairRequest, onClicked: (id: Int) -> Unit ) {
             Column() {
                 Text(
                     text = request.org_name,
-                    fontSize = 20.sp
+                    color = MaterialTheme.colors.onSurface,
+                    style = MaterialTheme.typography.body1,
                 )
                 Text(
                     text = request.name,
-                    fontSize = 16.sp
+                    color = MaterialTheme.colors.onSurface,
+                    style = MaterialTheme.typography.body2,
                 )
             }
         }

@@ -1,6 +1,8 @@
 package com.artech.requestsappandroid.presentation.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,45 +16,54 @@ import com.artech.requestsappandroid.data.remote.dto.RepairRequest
 @Composable
 fun RepairRequestView(request: RepairRequest) {
     Surface(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().background(
+            MaterialTheme.colors.surface,
+            MaterialTheme.shapes.small
+        )
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(10.dp),
         ) {
             Text(
                 text = "Клиент",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.SemiBold
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.h5,
             )
             Text(
                 text = request.org_name,
-                fontSize = 22.sp
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.subtitle1,
             )
             Text(
                 text = request.org_address,
-                fontSize = 16.sp
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.subtitle1,
             )
             Text(
                 text = request.org_phone,
-                fontSize = 16.sp
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.subtitle1,
             )
             Spacer(modifier = Modifier.fillMaxWidth().height(15.dp))
             Text(
                 text = "Информация о проблеме",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.SemiBold
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.h5,
             )
             Text(
                 text = request.name,
-                fontSize = 22.sp
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.h6,
             )
             Text(
                 text = request.description,
-                fontSize = 16.sp
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.subtitle1,
             )
             Text(
                 text = request.desired_date,
-                fontSize = 16.sp
+                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.subtitle1,
             )
         }
     }
