@@ -16,6 +16,7 @@ import java.io.File
 import java.io.IOException
 import javax.inject.Inject
 
+// Вариант использования: Завершить заявку
 
 class CompleteTaskUseCase @Inject constructor(
     private val repository: ApiRepository

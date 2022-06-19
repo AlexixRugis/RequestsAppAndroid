@@ -6,6 +6,8 @@ import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
+// Интерфейс API для взаимодействия с сервером
+
 interface RequestsApi {
 
     @POST("login/")

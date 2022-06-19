@@ -6,6 +6,8 @@ import com.artech.requestsappandroid.data.remote.dto.ChangePasswordData
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
+// Репозиторий для данных
+
 class ApiRepository @Inject constructor(private val api: RequestsApi){
     suspend fun logout() = api.logout()
     suspend fun login(data: AuthenticationData) = api.login(data)

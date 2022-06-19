@@ -17,6 +17,8 @@ import com.artech.requestsappandroid.data.remote.dto.Employee
 import com.artech.requestsappandroid.data.remote.dto.RepairTask
 import com.artech.requestsappandroid.presentation.ui.screens.main.Screens
 
+// Экран выводит данные из viewModel и отправляет туда события (например, нажатие на кнопку)
+
 @Composable
 fun AccountScreen(navController: NavController, viewModel: AccountViewModel = hiltViewModel()) {
     val accountState = viewModel.accountState.collectAsState()

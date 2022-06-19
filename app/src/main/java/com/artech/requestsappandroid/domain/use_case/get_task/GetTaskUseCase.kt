@@ -9,6 +9,8 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
+// Вариант использования: Получить данные опринятой заявке
+
 class GetTaskUseCase @Inject constructor(
     private val repository: ApiRepository
 ) {

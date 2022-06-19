@@ -1,5 +1,7 @@
 package com.artech.requestsappandroid.utils
 
+// Константы приложения
+
 class Constants{
     object Screens {
         const val ACCOUNT_SCREEN = "account_screen"

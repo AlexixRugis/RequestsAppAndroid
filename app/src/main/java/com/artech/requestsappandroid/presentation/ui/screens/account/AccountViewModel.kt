@@ -14,23 +14,29 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// ViewModel для экрана аккаунта
+
 @HiltViewModel
 class AccountViewModel @Inject constructor(
+    // Инжекция вариантов использования через DI контейнер
     private val getAccountDataUseCase: GetAccountDataUseCase,
     private val getTasksUseCase: GetTasksUseCase
 ) : ViewModel() {
 
+    // Состояние экрана
     private val _accountState = MutableStateFlow(DataLoadingState<Employee>())
     val accountState : StateFlow<DataLoadingState<Employee>> = _accountState
 
     private val _tasksState = MutableStateFlow(DataLoadingState<RepairTasks>())
     val tasksState: StateFlow<DataLoadingState<RepairTasks>> = _tasksState
 
+    // Обработчик события загрузки экрана
     fun enterScreen() {
         getAccountData()
         getTasks()
     }
 
+    //Получение данных об аккаунте
     private fun getAccountData() {
         viewModelScope.launch {
             getAccountDataUseCase.invoke().collect {
@@ -43,6 +49,7 @@ class AccountViewModel @Inject constructor(
         }
     }
 
+    // Получение данных о принятых заявках
     private fun getTasks() {
         viewModelScope.launch {
             getTasksUseCase.invoke().collect {

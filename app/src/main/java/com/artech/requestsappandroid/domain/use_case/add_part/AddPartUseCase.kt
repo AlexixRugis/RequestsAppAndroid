@@ -10,6 +10,8 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
+// Вариант использования: Добавить заказ запчасти к заявке
+
 class AddPartUseCase @Inject constructor(
     private val repository: ApiRepository
 ) {
