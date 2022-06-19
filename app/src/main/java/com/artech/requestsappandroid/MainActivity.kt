@@ -1,5 +1,6 @@
 package com.artech.requestsappandroid
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +13,7 @@ import com.artech.requestsappandroid.presentation.ui.screens.main.MainScreen
 import com.artech.requestsappandroid.presentation.ui.screens.main.MainViewModel
 import com.artech.requestsappandroid.presentation.ui.screens.main.models.MainViewEvent
 import com.artech.requestsappandroid.presentation.ui.theme.RequestsAppAndroidTheme
+import com.artech.requestsappandroid.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

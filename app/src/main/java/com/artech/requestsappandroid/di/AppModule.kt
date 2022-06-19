@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
     @Provides
-    fun baseUrl() = "http://10.0.2.2:8000/api/v1/"
+    fun baseUrl() = "http://alexixrugis.pythonanywhere.com/api/v1/"
 
     @Provides
     fun provideHttpClient(@ApplicationContext appContext: Context): OkHttpClient {
