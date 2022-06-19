@@ -12,10 +12,10 @@ import javax.inject.Inject
 class GetRepairPartsUseCase @Inject constructor(
     private val repository: ApiRepository
 ) {
-    operator fun invoke(): Flow<Resource<List<RepairPart>>> = flow {
+    operator fun invoke(searchQuery: String = ""): Flow<Resource<List<RepairPart>>> = flow {
         try {
             emit(Resource.Loading<List<RepairPart>>())
-            val response = repository.getRepairParts()
+            val response = repository.getRepairParts(searchQuery)
 
             if (response.isSuccessful) {
                 emit(Resource.Success<List<RepairPart>>(response.body()!!))

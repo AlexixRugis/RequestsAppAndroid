@@ -15,7 +15,7 @@ class GetRepairPartUseCase @Inject constructor(
     operator fun invoke(id: Int): Flow<Resource<RepairPart>> = flow {
         try {
             emit(Resource.Loading<RepairPart>())
-            val response = repository.getRepairParts()
+            val response = repository.getRepairParts("")
 
             if (response.isSuccessful) {
                 emit(Resource.Success<RepairPart>(response.body()!!.first { it.id == id }))

@@ -46,7 +46,7 @@ interface RequestsApi {
     ) : Response<ResponseDetails>
 
     @GET("repair_parts/")
-    suspend fun getRepairParts() : Response<List<RepairPart>>
+    suspend fun getRepairParts(@Query("search") searchQuery: String) : Response<List<RepairPart>>
 
     @POST("tasks/{id}/add_parts/")
     suspend fun addParts(@Path("id") id: Int, @Body partRequests: AddParts) : Response<ResponseDetails>

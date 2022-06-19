@@ -9,11 +9,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -128,10 +132,23 @@ fun RepairPartRequest(request: PartRequest) {
                 .fillMaxWidth()
                 .padding(10.dp)
         ) {
-            Text(
-                text = request.part.name,
-                modifier = Modifier.padding(end = 15.dp)
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = request.part.name,
+                    modifier = Modifier.padding(end = 15.dp)
+                )
+                Spacer(modifier = Modifier.weight(1f, true))
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = if (request.is_completed) Color.Green else Color.Red)) {
+                            append(if (request.is_completed) "В наличии" else "Заказано")
+                        }
+                    },
+                    modifier = Modifier.padding(end = 15.dp)
+                )
+            }
             Text(
                 text = "${request.part.price} руб. * ${request.amount}",
                 modifier = Modifier.padding(end = 15.dp)

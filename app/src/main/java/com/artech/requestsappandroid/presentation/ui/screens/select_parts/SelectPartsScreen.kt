@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.artech.requestsappandroid.presentation.ui.components.RepairPartView
+import com.artech.requestsappandroid.presentation.ui.components.SearchView
 import com.artech.requestsappandroid.presentation.ui.screens.main.Screens
 
 @Composable
@@ -30,40 +31,37 @@ fun SelectPartsScreen(navController: NavController, taskId: Int, viewModel: Sele
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        if (state.value.data != null) {
-            Column(
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Запчасти",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            SearchView(onClickSearch = { viewModel.updateParts(it) })
+            LazyColumn(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "Запчасти",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    itemsIndexed(state.value.data?: emptyList()) { i, item ->
-                        RepairPartView(repairPart = item, onClick = {
-                            navController.navigate(Screens.TaskRepairParts.route + "/${taskId}/${item.id}")
-                        })
-                    }
+                itemsIndexed(state.value.data?: emptyList()) { i, item ->
+                    RepairPartView(repairPart = item, onClick = {
+                        navController.navigate(Screens.TaskRepairParts.route + "/${taskId}/${item.id}")
+                    })
                 }
             }
-        }
+            if (state.value.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(30.dp)
+                )
+            }
 
-        if (state.value.isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(30.dp)
-            )
-        }
-
-
-        if (state.value.error.isNotEmpty()) {
-            Text(
-                text = state.value.error,
-                modifier = Modifier.padding(20.dp),
-                textAlign = TextAlign.Center
-            )
+            if (state.value.error.isNotEmpty()) {
+                Text(
+                    text = state.value.error,
+                    modifier = Modifier.padding(20.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }

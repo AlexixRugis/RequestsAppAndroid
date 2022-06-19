@@ -18,6 +18,6 @@ class ApiRepository @Inject constructor(private val api: RequestsApi){
     suspend fun getTasks() = api.getTasks()
     suspend fun getTask(id: Int) = api.getTask(id)
     suspend fun completeTask(id: Int, image: MultipartBody.Part) = api.completeTask(id, image)
-    suspend fun getRepairParts() = api.getRepairParts()
+    suspend fun getRepairParts(searchQuery: String) = api.getRepairParts(searchQuery)
     suspend fun addParts(id: Int, partRequests: AddParts) = api.addParts(id, partRequests)
 }
