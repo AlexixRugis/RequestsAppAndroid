@@ -1,5 +1,6 @@
 package com.artech.requestsappandroid.presentation.ui.screens.complete_task
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -27,9 +28,9 @@ class CompleteTaskViewModel @Inject constructor(
         _id = savedStateHandle.get<String>("taskId")!!.toInt()
     }
 
-    fun submitImage(uri: Uri) {
+    fun submitImage(context: Context, uri: Uri) {
         viewModelScope.launch {
-            completeTaskUseCase.invoke(_id, uri).collect {
+            completeTaskUseCase.invoke(_id, context, uri).collect {
                 when (it) {
                     ActionStatus.Loading -> _state.value = CompleteTaskViewState(isLoading = true)
                     ActionStatus.Success -> _state.value = CompleteTaskViewState(isCompleted = true)

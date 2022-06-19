@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -18,12 +19,13 @@ import androidx.navigation.NavController
 @Composable
 fun CompleteTaskScreen(navController: NavController, viewModel: CompleteTaskViewModel = hiltViewModel()) {
     val state = viewModel.state.collectAsState()
+    val context = LocalContext.current
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) {
         if (it != null) {
-            viewModel.submitImage(it)
+            viewModel.submitImage(context, it)
         }
     }
 

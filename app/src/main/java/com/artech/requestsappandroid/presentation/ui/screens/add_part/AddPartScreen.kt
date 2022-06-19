@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.artech.requestsappandroid.presentation.ui.components.RepairPartView
-import com.artech.requestsappandroid.presentation.ui.screens.main.Screens
 
 @Composable
 fun AddPartScreen(navController: NavController, viewModel: AddPartViewModel = hiltViewModel()) {
@@ -25,11 +24,11 @@ fun AddPartScreen(navController: NavController, viewModel: AddPartViewModel = hi
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
-        if (state.value.part != null) {
+        if (state.value.repairPart != null) {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                RepairPartView(part = state.value.part!!, onClick = {})
+                RepairPartView(repairPart = state.value.repairPart!!, onClick = {})
                 Spacer(modifier = Modifier.height(10.dp))
                 OutlinedTextField(
                     value = state.value.amount.toString(),

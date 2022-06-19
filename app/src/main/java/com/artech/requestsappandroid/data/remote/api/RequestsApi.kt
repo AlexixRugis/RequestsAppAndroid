@@ -1,11 +1,10 @@
 package com.artech.requestsappandroid.data.remote.api
 
 import com.artech.requestsappandroid.data.remote.dto.*
+import com.artech.requestsappandroid.data.remote.dto.RepairPart
+import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface RequestsApi {
 
@@ -39,11 +38,15 @@ interface RequestsApi {
     @GET("tasks/{id}/")
     suspend fun getTask(@Path("id") id : Int) : Response<RepairTask>
 
+    @Multipart
     @POST("tasks/{id}/complete/")
-    suspend fun completeTask(@Path("id") id : Int) : Response<ResponseDetails>
+    suspend fun completeTask(
+        @Path("id") id : Int,
+        @Part image : MultipartBody.Part
+    ) : Response<ResponseDetails>
 
     @GET("repair_parts/")
-    suspend fun getRepairParts() : Response<List<Part>>
+    suspend fun getRepairParts() : Response<List<RepairPart>>
 
     @POST("tasks/{id}/add_parts/")
     suspend fun addParts(@Path("id") id: Int, @Body partRequests: AddParts) : Response<ResponseDetails>

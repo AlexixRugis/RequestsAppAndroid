@@ -9,10 +9,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.artech.requestsappandroid.data.remote.dto.Part
+import com.artech.requestsappandroid.data.remote.dto.RepairPart
 
 @Composable
-fun RepairPartView(part: Part, onClick: () -> Unit) {
+fun RepairPartView(repairPart: RepairPart, onClick: () -> Unit) {
     Card(
         elevation = 8.dp,
         modifier = Modifier
@@ -22,10 +22,10 @@ fun RepairPartView(part: Part, onClick: () -> Unit) {
             modifier = Modifier.fillMaxWidth().padding(10.dp)
         ) {
             Text(
-                text = part.name,
+                text = repairPart.name,
             )
             Text(
-                text = "${part.price} руб.",
+                text = "${repairPart.price} руб.",
             )
         }
     }

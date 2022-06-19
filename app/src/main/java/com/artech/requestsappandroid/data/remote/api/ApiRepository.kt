@@ -3,6 +3,7 @@ package com.artech.requestsappandroid.data.remote.api
 import com.artech.requestsappandroid.data.remote.dto.AddParts
 import com.artech.requestsappandroid.data.remote.dto.AuthenticationData
 import com.artech.requestsappandroid.data.remote.dto.ChangePasswordData
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class ApiRepository @Inject constructor(private val api: RequestsApi){
@@ -16,7 +17,7 @@ class ApiRepository @Inject constructor(private val api: RequestsApi){
     suspend fun acceptRequest(id: Int) = api.acceptRequest(id)
     suspend fun getTasks() = api.getTasks()
     suspend fun getTask(id: Int) = api.getTask(id)
-    suspend fun completeTask(id: Int) = api.completeTask(id)
+    suspend fun completeTask(id: Int, image: MultipartBody.Part) = api.completeTask(id, image)
     suspend fun getRepairParts() = api.getRepairParts()
     suspend fun addParts(id: Int, partRequests: AddParts) = api.addParts(id, partRequests)
 }

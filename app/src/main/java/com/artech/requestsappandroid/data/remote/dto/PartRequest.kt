@@ -4,6 +4,6 @@ data class PartRequest(
     val amount: Int,
     val id: Int,
     val is_completed: Boolean,
-    val part: Part,
+    val part: RepairPart,
     val task: Int
 )

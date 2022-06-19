@@ -40,7 +40,7 @@ class AddPartViewModel @Inject constructor(
             getRepairPartUseCase.invoke(_partId).collect {
                 when (it) {
                     is Resource.Loading -> _state.value = AddPartViewState(isLoading = true)
-                    is Resource.Success -> _state.value = AddPartViewState(part = it.data)
+                    is Resource.Success -> _state.value = AddPartViewState(repairPart = it.data)
                     is Resource.Error -> _state.value = AddPartViewState(error = it.message!!)
                 }
             }

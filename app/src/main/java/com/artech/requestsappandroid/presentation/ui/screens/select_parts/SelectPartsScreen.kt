@@ -43,7 +43,7 @@ fun SelectPartsScreen(navController: NavController, taskId: Int, viewModel: Sele
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     itemsIndexed(state.value.data?: emptyList()) { i, item ->
-                        RepairPartView(part = item, onClick = {
+                        RepairPartView(repairPart = item, onClick = {
                             navController.navigate(Screens.TaskRepairParts.route + "/${taskId}/${item.id}")
                         })
                     }
