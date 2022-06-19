@@ -32,7 +32,6 @@ class MainActivity : ComponentActivity() {
             }
 
             RequestsAppAndroidTheme(state.value.darkTheme) {
-
                 MainScreen(navController = navController, viewModel = mainViewModel)
             }
         }

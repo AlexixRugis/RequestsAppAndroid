@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -86,7 +87,7 @@ fun MainView(navController: NavHostController, viewModel: MainViewModel) {
                         scaffoldState.drawerState.open()
                     }
                 }) {Icon(Icons.Filled.Menu, contentDescription = "Меню") }
-                Text("ARTech", fontSize = 20.sp)
+                Text("Журнал заявок", fontSize = 20.sp)
             }
         },
         drawerContent={
@@ -198,19 +199,29 @@ fun SplashScreen() {
         LaunchedEffect(key1 = true, block = { isAnimating.value = true })
 
         Box(
-            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                modifier = Modifier
-                    .size(120.dp)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(100.dp).fillMaxWidth().align(Alignment.CenterHorizontally)
 
-                    .scale(alphaAnimation.value)
-                    .alpha(alphaAnimation.value),
-                imageVector = Icons.Default.Person,
-                contentDescription = "",
-                tint = MaterialTheme.colors.onBackground
-            )
+                        .scale(alphaAnimation.value)
+                        .alpha(alphaAnimation.value),
+                    imageVector = Icons.Default.Notifications,
+                    contentDescription = "",
+                    tint = MaterialTheme.colors.onBackground
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    text = "Журнал заявок",
+                    color = MaterialTheme.colors.onBackground,
+                    style = MaterialTheme.typography.h5
+                )
+            }
         }
     }
 }
