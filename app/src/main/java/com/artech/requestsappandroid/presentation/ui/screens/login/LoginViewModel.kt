@@ -58,8 +58,8 @@ class LoginViewModel @Inject constructor(
 
                     val response = repository.login(
                         AuthenticationData(
-                            _loginState.value.email,
-                            _loginState.value.password
+                            _loginState.value.email.trim(),
+                            _loginState.value.password.trim()
                         )
                     )
 
